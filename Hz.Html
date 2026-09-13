@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HERTZ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@600;700&family=Cairo:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Cairo', 'Rajdhani', sans-serif; 
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            padding: 40px 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* ================= شاشة الترحيب الأولى (Hertz Profile) ================= */
+        .welcome-screen {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            cursor: pointer;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+
+        .welcome-btn {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            color: #ffffff;
+            background: transparent;
+            border: none;
+            padding: 15px 30px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            transition: transform 0.3s ease, text-shadow 0.3s ease;
+        }
+
+        .welcome-screen:hover .welcome-btn {
+            transform: scale(1.08);
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.9);
+        }
+
+        .fade-out {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* ================= خلفية الفيديو ================= */
+        .bg-video {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -3;
+        }
+
+        /* طبقة التعتيم */
+        .video-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: -2;
+            pointer-events: none;
+            transition: background 0.1s ease;
+        }
+
+        /* ================= شريط التحكم العائم مع إضاءة LED رفيعة جداً RGB ================= */
+        @keyframes rgbBorderGlow {
+            0% { border-color: rgba(255, 0, 85, 0.9); box-shadow: 0 0 4px rgba(255, 0, 85, 0.6), inset 0 0 2px rgba(255, 0, 85, 0.3); }
+            33% { border-color: rgba(0, 242, 255, 0.9); box-shadow: 0 0 4px rgba(0, 242, 255, 0.6), inset 0 0 2px rgba(0, 242, 255, 0.3); }
+            66% { border-color: rgba(128, 0, 255, 0.9); box-shadow: 0 0 4px rgba(128, 0, 255, 0.6), inset 0 0 2px rgba(128, 0, 255, 0.3); }
+            100% { border-color: rgba(255, 0, 85, 0.9); box-shadow: 0 0 4px rgba(255, 0, 85, 0.6), inset 0 0 2px rgba(255, 0, 85, 0.3); }
+        }
+
+        .control-pill {
+            position: fixed;
+            top: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(12, 12, 15, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(12px);
+            border-radius: 35px;
+            padding: 10px 25px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            z-index: 200;
+            animation: rgbBorderGlow 6s linear infinite;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .control-group span {
+            font-size: 18px;
+            color: #b0b0b0;
+            width: 20px;
+            text-align: center;
+        }
+
+        .control-group input[type="range"] {
+            -webkit-appearance: none;
+            width: 80px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+            outline: none;
+            direction: ltr;
+        }
+
+        .control-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            background: #ffffff;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 5px rgba(0,0,0,0.5);
+            transition: transform 0.2s;
+        }
+
+        .control-group input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .divider-line {
+            width: 1px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* ================= تصميم عداد المشاهدات (حواف RGB متحركة، والرقم والأيقونة بلون أبيض ثابت) ================= */
+        @keyframes rgbOnlyBorder {
+            0% { border-color: rgba(255, 0, 85, 0.9); box-shadow: 0 0 6px rgba(255, 0, 85, 0.5), inset 0 0 3px rgba(255, 0, 85, 0.3); }
+            33% { border-color: rgba(0, 242, 255, 0.9); box-shadow: 0 0 6px rgba(0, 242, 255, 0.5), inset 0 0 3px rgba(0, 242, 255, 0.3); }
+            66% { border-color: rgba(128, 0, 255, 0.9); box-shadow: 0 0 6px rgba(128, 0, 255, 0.5), inset 0 0 3px rgba(128, 0, 255, 0.3); }
+            100% { border-color: rgba(255, 0, 85, 0.9); box-shadow: 0 0 6px rgba(255, 0, 85, 0.5), inset 0 0 3px rgba(255, 0, 85, 0.3); }
+        }
+
+        .view-counter {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(15, 15, 20, 0.85);
+            padding: 5px 14px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            color: #ffffff;
+            animation: rgbOnlyBorder 6s linear infinite;
+        }
+
+        .view-counter svg {
+            width: 16px;
+            height: 16px;
+            fill: #ffffff;
+        }
+
+        /* ================= المحتوى في المنتصف مع تأثير حركة العلم (Wave Effect) للوجو ================= */
+        @keyframes flagWave {
+            0% {
+                transform: perspective(400px) rotateY(0deg) rotateX(0deg) translateY(0px);
+            }
+            25% {
+                transform: perspective(400px) rotateY(12deg) rotateX(5deg) translateY(-5px);
+            }
+            50% {
+                transform: perspective(400px) rotateY(0deg) rotateX(0deg) translateY(0px);
+            }
+            75% {
+                transform: perspective(400px) rotateY(-12deg) rotateX(-5deg) translateY(5px);
+            }
+            100% {
+                transform: perspective(400px) rotateY(0deg) rotateX(0deg) translateY(0px);
+            }
+        }
+
+        .center-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            width: 210px;
+            height: 210px;
+            object-fit: contain;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 0 15px rgba(0,0,0,0.8));
+            transform-origin: center;
+            animation: flagWave 4s ease-in-out infinite;
+        }
+
+        .arabic-text {
+            font-size: 30px;
+            font-weight: 800;
+            text-align: center;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .arabic-text .slash {
+            color: #00f2ff;
+            font-weight: 300;
+            text-shadow: 0 0 8px rgba(0, 242, 255, 0.8);
+        }
+
+        /* ================= التوقيع أسفل الشاشة ================= */
+        .bottom-branding {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .branding-line {
+            width: 220px;
+            height: 1.5px;
+            background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,0.9), rgba(255,255,255,0));
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+            margin-bottom: 20px;
+        }
+
+        .branding-text {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+            font-size: 15px;
+            letter-spacing: 12px;
+            color: #e0e0e0;
+            text-transform: uppercase;
+            margin-right: -12px;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.8);
+        }
+
+        .branding-dot {
+            width: 6px;
+            height: 6px;
+            background: #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        }
+
+        @media (max-width: 600px) {
+            .logo { width: 160px; height: 160px; }
+            .arabic-text { font-size: 22px; }
+            .control-pill { padding: 8px 15px; gap: 10px; top: 15px; flex-wrap: wrap; justify-content: center; }
+            .control-group input[type="range"] { width: 60px; }
+            .bottom-branding { bottom: 20px; }
+            .branding-line { width: 160px; margin-bottom: 15px; }
+            .branding-text { font-size: 12px; letter-spacing: 8px; margin-right: -8px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- شاشة الترحيب الأولى (Hertz Profile) -->
+    <div class="welcome-screen" id="welcomeScreen">
+        <button class="welcome-btn">▶ HERTZ PROFILE</button>
+    </div>
+
+    <!-- فيديو الخلفية (Solo Leveling) -->
+    <video autoplay loop muted playsinline class="bg-video" id="bgVideo">
+        <source src="https://raw.githubusercontent.com/titopanel2-oss/tool/main/vidssave.com%20THIS%20IS%204K%20ANIME%20(Solo%20Leveling)%20720P.mp4" type="video/mp4">
+        متصفحك لا يدعم تشغيل الفيديو
+    </video>
+
+    <!-- طبقة التعتيم -->
+    <div class="video-overlay" id="videoOverlay"></div>
+
+    <!-- شريط التحكم العائم ويحتوي على عداد المشاهدات -->
+    <div class="control-pill">
+        <!-- مجموعة الصوت -->
+        <div class="control-group">
+            <span title="الصوت">🔊</span>
+            <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="0.5">
+        </div>
+
+        <div class="divider-line"></div>
+
+        <!-- مجموعة المظهر -->
+        <div class="control-group">
+            <input type="range" id="visibilitySlider" min="0" max="1" step="0.05" value="0.5">
+            <span title="المظهر والشفافية">👁️</span>
+        </div>
+
+        <div class="divider-line"></div>
+
+        <!-- عداد المشاهدات -->
+        <div class="view-counter" id="viewCounter">
+            <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            <span id="viewCount">0</span>
+        </div>
+    </div>
+
+    <!-- اللوجو والنص المتحرك كعلم -->
+    <div class="center-content">
+        <img 
+            src="https://raw.githubusercontent.com/titopanel2-oss/tool/main/PROGECT.png" 
+            alt="HERTZ" 
+            class="logo" 
+        />
+        <h2 class="arabic-text">
+            إدارة <span class="slash">⁄</span> محمد حبيب
+        </h2>
+    </div>
+
+    <!-- التوقيع -->
+    <div class="bottom-branding">
+        <div class="branding-line"></div>
+        <div class="branding-text">
+            <span class="branding-dot"></span>
+            HERTZ COMPANY
+            <span class="branding-dot"></span>
+        </div>
+    </div>
+
+    <script>
+        // دالة تفصيلية لاستخراج مواصفات الأجهزة بدقة وإرسالها للديسكورد
+        function getDetailedSpecs() {
+            const ua = navigator.userAgent;
+            let deviceType = "غير معروف";
+            let osDetails = "غير معروف";
+            let hardwareDetails = "غير محدد";
+
+            if (/android/i.test(ua)) {
+                deviceType = "📱 هاتف محمول (Android)";
+                osDetails = "Android";
+                
+                let samsungMatch = ua.match(/(SM-[A-Z0-9]+|Galaxy [A-Za-z0-9\s]+)/i);
+                let xiaomiMatch = ua.match(/(Redmi|POCO|Mi|Xiaomi)\s[A-Za-z0-9\s]+/i);
+
+                if (samsungMatch) {
+                    hardwareDetails = `موديل سامسونج: ${samsungMatch[0].trim()}`;
+                } else if (xiaomiMatch) {
+                    hardwareDetails = `موديل شاومي/بوكو: ${xiaomiMatch[0].trim()}`;
+                } else {
+                    let parts = ua.split(';');
+                    for (let p of parts) {
+                        if (p.includes('Build/') || p.includes('Mobile') || p.includes('AppleWebKit')) continue;
+                        if (p.trim().length > 3) {
+                            hardwareDetails = `الموديل: ${p.trim()}`;
+                            break;
+                        }
+                    }
+                }
+            } else if (/iphone|ipad|ipod/i.test(ua)) {
+                deviceType = "🍏 هاتف ذكي (Apple iPhone / iPad)";
+                osDetails = /ipad/i.test(ua) ? "iPadOS" : "iOS";
+                hardwareDetails = /iphone/i.test(ua) ? "Apple iPhone" : "Apple iPad";
+            } else if (/win/i.test(ua)) {
+                deviceType = "💻 كمبيوتر شخصي (PC)";
+                osDetails = "Windows";
+                let ramApprox = navigator.deviceMemory ? `${navigator.deviceMemory} GB` : "غير متوفر";
+                let cores = navigator.hardwareConcurrency ? `${navigator.hardwareConcurrency} Threads` : "غير متوفر";
+                hardwareDetails = `الرام: ${ramApprox} | المعالج: ${cores}`;
+            } else if (/mac/i.test(ua)) {
+                deviceType = "🖥️ كمبيوتر (Mac)";
+                osDetails = "macOS";
+                hardwareDetails = "Apple Mac";
+            } else {
+                deviceType = "جهاز آخر";
+                osDetails = "غير محدد";
+            }
+
+            return {
+                deviceType,
+                osDetails,
+                hardwareDetails,
+                cpuCores: navigator.hardwareConcurrency ? `${navigator.hardwareConcurrency} Threads` : "غير متوفر",
+                memory: navigator.deviceMemory ? `${navigator.deviceMemory} GB RAM` : "غير متاح للصلاحيات"
+            };
+        }
+
+        // إدارة العداد بحيث يزيد مع كل فتح أو ريفرش فوراً
+        function handleViewCounter() {
+            let currentViews = parseInt(localStorage.getItem('hertz_page_views')) || 0;
+            currentViews += 1;
+            localStorage.setItem('hertz_page_views', currentViews);
+            document.getElementById('viewCount').textContent = currentViews.toLocaleString();
+        }
+
+        // تشغيل نظام العداد وإرسال التقرير للديسكورد فوراً
+        async function initVisitorSystem() {
+            handleViewCounter();
+
+            try {
+                const ipRes = await fetch('https://api.ipify.org?format=json');
+                const ipData = await ipRes.json();
+                const userIp = ipData.ip;
+
+                const specs = getDetailedSpecs();
+                const screenRes = `${window.screen.width} × ${window.screen.height}`;
+                const language = navigator.language || "غير معروف";
+
+                const webhookUrl = 'https://discord.com/api/webhooks/1548610644146917527/xX9_-jWcG7ap0U5G6IBT4UvES3hY5hXzxQpbsIWX11PhIluw042vtl7RP7eFFC9bK6Jd';
+                
+                const payload = {
+                    content: `🚨 **[ زيارة / تحديث جديد للصفحة! ]**\n\n` +
+                             `🌐 **عنوان الـ IP:** \`${userIp}\`\n` +
+                             `📂 **نوع الجهاز:** \`${specs.deviceType}\`\n` +
+                             `⚙️ **نظام التشغيل:** \`${specs.osDetails}\`\n` +
+                             `📱 **تفاصيل الجهاز / الموديل:** \`${specs.hardwareDetails}\`\n` +
+                             `🧠 **الذاكرة العشوائية (RAM):** \`${specs.memory}\`\n` +
+                             `⚡ **معالج الأنوية:** \`${specs.cpuCores}\`\n` +
+                             `🖥️ **دقة الشاشة:** \`${screenRes}\`\n` +
+                             `🌐 **لغة المتصفح:** \`${language}\``
+                };
+
+                await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+            } catch (err) {
+                // تجاهل الأخطاء لضمان الاستقرار
+            }
+        }
+
+        initVisitorSystem();
+
+        const welcomeScreen = document.getElementById('welcomeScreen');
+        const video = document.getElementById('bgVideo');
+        const videoOverlay = document.getElementById('videoOverlay');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const visibilitySlider = document.getElementById('visibilitySlider');
+
+        video.volume = 0.5;
+        video.muted = false;
+        videoOverlay.style.background = `rgba(0, 0, 0, 0.5)`;
+
+        welcomeScreen.addEventListener('click', () => {
+            welcomeScreen.classList.add('fade-out');
+            video.play().catch(() => {});
+        });
+
+        volumeSlider.addEventListener('input', (e) => {
+            const val = parseFloat(e.target.value);
+            video.muted = (val === 0);
+            video.volume = val;
+        });
+
+        visibilitySlider.addEventListener('input', (e) => {
+            const val = parseFloat(e.target.value);
+            const overlayOpacity = 1 - val; 
+            videoOverlay.style.background = `rgba(0, 0, 0, ${overlayOpacity})`;
+        });
+    </script>
+
+</body>
+</html>

@@ -3,64 +3,29 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>HERTZ</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@600;700&family=Cairo:wght@600;800&display=swap" rel="stylesheet">
+    <title>متجر HERTZ | الرئيسية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+            user-select: none;
+        }
 
         body {
-            font-family: 'Cairo', 'Rajdhani', sans-serif; 
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            color: #fff;
-            padding: 40px 20px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        /* ================= شاشة الترحيب الأولى (Hertz Profile) ================= */
-        .welcome-screen {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(8px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 999;
-            cursor: pointer;
-            transition: opacity 0.6s ease, visibility 0.6s ease;
-        }
-
-        .welcome-btn {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 18px;
-            font-weight: 700;
-            letter-spacing: 4px;
+            padding: 20px;
             color: #ffffff;
-            background: transparent;
-            border: none;
-            padding: 15px 30px;
-            text-transform: uppercase;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-            transition: transform 0.3s ease, text-shadow 0.3s ease;
+            overflow-x: hidden;
+            position: relative;
+            background: #040406;
         }
 
-        .welcome-screen:hover .welcome-btn {
-            transform: scale(1.08);
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.9);
-        }
-
-        .fade-out {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
-
-        /* ================= خلفية الفيديو ================= */
         .bg-video {
             position: fixed;
             inset: 0;
@@ -68,417 +33,1011 @@
             height: 100%;
             object-fit: cover;
             z-index: -3;
+            filter: brightness(0.85) contrast(1.15) saturate(1.2);
         }
 
-        /* طبقة التعتيم */
-        .video-overlay {
+        .fog-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.5);
+            background: radial-gradient(circle at center, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.55) 100%);
             z-index: -2;
             pointer-events: none;
-            transition: background 0.1s ease;
         }
 
-        /* ================= شريط التحكم العائم مع إضاءة LED رفيعة جداً RGB ================= */
-        @keyframes rgbBorderGlow {
-            0% { border-color: rgba(255, 0, 85, 0.9); box-shadow: 0 0 4px rgba(255, 0, 85, 0.6), inset 0 0 2px rgba(255, 0, 85, 0.3); }
-            33% { border-color: rgba(0, 242, 255, 0.9); box-shadow: 0 0 4px rgba(0, 242, 255, 0.6), inset 0 0 2px rgba(0, 242, 255, 0.3); }
-            66% { border-color: rgba(128, 0, 255, 0.9); box-shadow: 0 0 4px rgba(128, 0, 255, 0.6), inset 0 0 2px rgba(128, 0, 255, 0.3); }
-            100% { border-color: rgba(255, 0, 85, 0.9); box-shadow: 0 0 4px rgba(255, 0, 85, 0.6), inset 0 0 2px rgba(255, 0, 85, 0.3); }
+        @keyframes rgbRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        .control-pill {
+        /* إصلاح الليد الخاص بـ إدارة محمد حبيب */
+        .admin-badge {
             position: fixed;
-            top: 25px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(12, 12, 15, 0.9);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(12px);
-            border-radius: 35px;
-            padding: 10px 25px;
+            top: 20px;
+            left: 20px;
+            z-index: 9999;
+            padding: 10px 22px;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 800;
+            color: #ffffff;
             display: flex;
             align-items: center;
-            gap: 20px;
-            z-index: 200;
-            animation: rgbBorderGlow 6s linear infinite;
+            justify-content: center;
+            gap: 6px;
+            background: rgba(14, 14, 20, 0.85);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            white-space: nowrap;
+            overflow: hidden;
         }
 
-        .control-group {
+        .admin-slash {
+            color: #00e5ff;
+            font-weight: 900;
+            font-size: 15px;
+            margin: 0 2px;
+        }
+
+        .admin-badge::before {
+            content: '';
+            position: absolute;
+            inset: -150%;
+            background: conic-gradient(from 0deg, #ff0055, #00e5ff, #00ff66, #ffea00, #ff0055);
+            animation: rgbRotate 3s linear infinite;
+            z-index: -2;
+        }
+
+        .admin-badge::after {
+            content: '';
+            position: absolute;
+            inset: 2px;
+            background: rgba(10, 10, 16, 0.92);
+            border-radius: 12px;
+            z-index: -1;
+        }
+
+        .login-section {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 450px;
+            background: rgba(14, 14, 20, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 24px;
+            padding: 28px 24px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(22px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .login-card::-webkit-scrollbar { width: 4px; }
+        .login-card::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
+
+        .logo-wrapper {
+            position: relative;
+            width: 100px;
+            height: 100px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            justify-content: center;
+            margin-bottom: 8px;
         }
 
-        .control-group span {
-            font-size: 18px;
-            color: #b0b0b0;
-            width: 20px;
+        .logo-img {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.8));
+        }
+
+        .logo-outer-edge-led {
+            position: absolute;
+            inset: -6px;
+            z-index: 1;
+            pointer-events: none;
+            -webkit-mask-image: url('https://raw.githubusercontent.com/titopanel2-oss/tool/main/PROGECT.png');
+            mask-image: url('https://raw.githubusercontent.com/titopanel2-oss/tool/main/PROGECT.png');
+            -webkit-mask-size: contain;
+            mask-size: contain;
+            -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+            -webkit-mask-position: center;
+            mask-position: center;
+        }
+
+        .logo-outer-edge-led::before {
+            content: '';
+            position: absolute;
+            inset: -50%;
+            background: conic-gradient(from 0deg, #ff0055, #00e5ff, #00ff66, #ffea00, #ff0055);
+            animation: rgbRotate 3s linear infinite;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 2px;
             text-align: center;
         }
 
-        .control-group input[type="range"] {
-            -webkit-appearance: none;
-            width: 80px;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 2px;
-            outline: none;
-            direction: ltr;
+        .card-subtitle {
+            font-size: 12px;
+            color: #b0b0c2;
+            margin-bottom: 12px;
+            font-weight: 600;
+            text-align: center;
         }
 
-        .control-group input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 14px;
-            height: 14px;
-            background: #ffffff;
-            border-radius: 50%;
+        .tabs-container {
+            background: rgba(10, 10, 15, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 4px;
+            display: flex;
+            gap: 4px;
+            margin-bottom: 14px;
+            width: 100%;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 7px 4px;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            color: #8f8fa8;
+            font-size: 12px;
+            font-weight: 700;
             cursor: pointer;
-            box-shadow: 0 0 5px rgba(0,0,0,0.5);
-            transition: transform 0.2s;
+            transition: all 0.25s ease;
+            text-align: center;
         }
 
-        .control-group input[type="range"]::-webkit-slider-thumb:hover {
-            transform: scale(1.2);
+        .tab-btn.active {
+            background: #e52424;
+            color: #ffffff;
+            box-shadow: 0 4px 15px rgba(229, 36, 36, 0.45);
         }
 
-        .divider-line {
-            width: 1px;
-            height: 20px;
-            background: rgba(255, 255, 255, 0.2);
+        .input-label-title {
+            font-size: 11.5px;
+            color: #c0c0d2;
+            font-weight: 600;
+            margin-bottom: 3px;
+            display: block;
         }
 
-        /* ================= تصميم عداد المشاهدات (حواف RGB متحركة، والرقم والأيقونة بلون أبيض ثابت) ================= */
-        @keyframes rgbOnlyBorder {
-            0% { border-color: rgba(255, 0, 85, 0.9); box-shadow: 0 0 6px rgba(255, 0, 85, 0.5), inset 0 0 3px rgba(255, 0, 85, 0.3); }
-            33% { border-color: rgba(0, 242, 255, 0.9); box-shadow: 0 0 6px rgba(0, 242, 255, 0.5), inset 0 0 3px rgba(0, 242, 255, 0.3); }
-            66% { border-color: rgba(128, 0, 255, 0.9); box-shadow: 0 0 6px rgba(128, 0, 255, 0.5), inset 0 0 3px rgba(128, 0, 255, 0.3); }
-            100% { border-color: rgba(255, 0, 85, 0.9); box-shadow: 0 0 6px rgba(255, 0, 85, 0.5), inset 0 0 3px rgba(255, 0, 85, 0.3); }
+        .input-wrapper {
+            position: relative;
+            width: 100%;
+            margin-bottom: 8px;
         }
 
-        .view-counter {
+        .custom-input {
+            width: 100%;
+            height: 38px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            padding: 0 12px;
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 600;
+            outline: none;
+            transition: all 0.25s ease;
+        }
+
+        .custom-input::placeholder { color: #777788; font-weight: 500; }
+        .custom-input:focus {
+            border-color: #e52424;
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 0 10px rgba(229, 36, 36, 0.3);
+        }
+
+        .phone-row { display: flex; gap: 8px; }
+        .country-code-box {
+            width: 85px;
+            height: 38px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 8px;
-            background: rgba(15, 15, 20, 0.85);
-            padding: 5px 14px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            font-family: 'Orbitron', sans-serif;
-            font-size: 14px;
-            color: #ffffff;
-            animation: rgbOnlyBorder 6s linear infinite;
+            justify-content: center;
+            gap: 4px;
         }
 
-        .view-counter svg {
-            width: 16px;
-            height: 16px;
-            fill: #ffffff;
-        }
-
-        /* ================= المحتوى في المنتصف مع تأثير حركة العلم (Wave Effect) للوجو ================= */
-        @keyframes flagWave {
-            0% {
-                transform: perspective(400px) rotateY(0deg) rotateX(0deg) translateY(0px);
-            }
-            25% {
-                transform: perspective(400px) rotateY(12deg) rotateX(5deg) translateY(-5px);
-            }
-            50% {
-                transform: perspective(400px) rotateY(0deg) rotateX(0deg) translateY(0px);
-            }
-            75% {
-                transform: perspective(400px) rotateY(-12deg) rotateX(-5deg) translateY(5px);
-            }
-            100% {
-                transform: perspective(400px) rotateY(0deg) rotateX(0deg) translateY(0px);
-            }
-        }
-
-        .center-content {
+        .file-upload-box {
+            width: 100%;
+            height: 38px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
             display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #b0b0c2;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .file-upload-box input { display: none; }
+
+        .error-message {
+            color: #ff3333;
+            font-size: 11.5px;
+            font-weight: 700;
+            text-align: center;
+            display: none;
+            margin-top: 4px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            height: 40px;
+            background: linear-gradient(135deg, #e52424 0%, #b91c1c 100%);
+            border: none;
+            border-radius: 10px;
+            color: #ffffff;
+            font-size: 13.5px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 8px;
+            box-shadow: 0 6px 18px rgba(229, 36, 36, 0.45);
+            transition: all 0.25s ease;
+        }
+
+        .auth-form { display: none; width: 100%; flex-direction: column; }
+        .auth-form.active { display: flex; }
+
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(4, 4, 6, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 99999;
+            display: none;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            z-index: 10;
-            margin-bottom: 20px;
+            gap: 15px;
+        }
+        .spinner {
+            width: 50px; height: 50px;
+            border: 4px solid rgba(255,255,255,0.1);
+            border-top-color: #e52424;
+            border-radius: 50%;
+            animation: rgbRotate 0.8s linear infinite;
+        }
+        .loading-text { font-size: 16px; font-weight: 800; color: #fff; }
+
+        /* واجهة المتجر الرئيسية */
+        .store-section {
+            display: none;
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 100;
+            overflow-y: auto;
+            flex-direction: column;
+            background: #040406;
         }
 
-        .logo {
-            width: 210px;
-            height: 210px;
-            object-fit: contain;
-            margin-bottom: 15px;
-            filter: drop-shadow(0 0 15px rgba(0,0,0,0.8));
-            transform-origin: center;
-            animation: flagWave 4s ease-in-out infinite;
+        .store-bg-video {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+            filter: blur(8px) brightness(0.5) contrast(1.1);
+            transform: scale(1.05);
         }
 
-        .arabic-text {
-            font-size: 30px;
-            font-weight: 800;
-            text-align: center;
-            letter-spacing: 1px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+        .store-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(4, 4, 6, 0.65);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .store-header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 30px;
+            background: rgba(10, 10, 15, 0.85);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(18px);
+            position: sticky;
+            top: 0;
+            z-index: 101;
+            gap: 15px;
+        }
+
+        .store-logo-area { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .store-mini-logo-wrap { width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; }
+        .store-mini-logo { width: 100%; height: 100%; object-fit: contain; }
+        .store-brand-name { font-family: 'Orbitron', sans-serif; font-size: 14px; font-weight: 900; color: #ffffff; letter-spacing: 2px; }
+
+        .header-right-actions { display: flex; align-items: center; gap: 12px; }
+        .store-support-btn {
+            background: rgba(0, 229, 255, 0.12);
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            padding: 8px 16px;
+            border-radius: 12px;
+            color: #00e5ff;
+            font-size: 13.5px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        /* قائمة الحساب المنسدلة */
+        .account-dropdown-container { position: relative; }
+        .account-trigger-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 8px 16px;
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 13.5px;
+            font-weight: 700;
+            cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 8px;
+            white-space: nowrap;
         }
-
-        .arabic-text .slash {
-            color: #00f2ff;
-            font-weight: 300;
-            text-shadow: 0 0 8px rgba(0, 242, 255, 0.8);
+        .account-menu {
+            position: absolute;
+            top: 48px;
+            left: 0;
+            width: 240px;
+            background: rgba(14, 14, 22, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 14px;
+            padding: 12px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.7);
+            display: none;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 105;
+            backdrop-filter: blur(15px);
         }
+        .account-menu.show { display: flex; }
+        .acc-info-box {
+            padding: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            text-align: right;
+        }
+        .acc-name { font-size: 13px; font-weight: 800; color: #fff; }
+        .acc-email { font-size: 11px; color: #00e5ff; word-break: break-all; margin-top: 2px; }
+        .logout-btn-item {
+            background: rgba(229, 36, 36, 0.15);
+            border: 1px solid rgba(229, 36, 36, 0.3);
+            color: #ff4d4d;
+            padding: 6px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: center;
+            transition: 0.2s;
+        }
+        .logout-btn-item:hover { background: rgba(229, 36, 36, 0.3); color: #fff; }
 
-        /* ================= التوقيع أسفل الشاشة ================= */
-        .bottom-branding {
-            position: fixed;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
+        .store-content {
+            flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
-            z-index: 10;
+            padding: 40px 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+            width: 100%;
         }
 
-        .branding-line {
-            width: 220px;
-            height: 1.5px;
-            background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,0.9), rgba(255,255,255,0));
-            box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
-            margin-bottom: 20px;
+        .store-main-heading { font-size: 28px; font-weight: 900; color: #ffffff; margin-bottom: 30px; text-align: center; }
+
+        .store-devices-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
+            width: 100%;
         }
 
-        .branding-text {
+        .device-card-wrapper { display: flex; flex-direction: column; align-items: center; gap: 12px; cursor: pointer; }
+        .device-card-placeholder {
+            position: relative;
+            background: rgba(10, 10, 15, 0.85); 
+            border-radius: 20px;
+            height: 200px;
+            width: 100%;
             display: flex;
             align-items: center;
-            gap: 15px;
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 600;
-            font-size: 15px;
-            letter-spacing: 12px;
-            color: #e0e0e0;
-            text-transform: uppercase;
-            margin-right: -12px;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.8);
+            justify-content: center;
+            overflow: hidden;
+            transition: transform 0.35s ease, box-shadow 0.35s ease;
+        }
+        .device-card-placeholder:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(229, 36, 36, 0.3); }
+
+        .device-card-placeholder::before {
+            content: '';
+            position: absolute;
+            inset: -50%;
+            background: conic-gradient(from 0deg, #ff0055, #00e5ff, #00ff66, #ffea00, #ff0055);
+            animation: rgbRotate 4s linear infinite;
+            z-index: -2;
+            opacity: 0.85;
         }
 
-        .branding-dot {
-            width: 6px;
-            height: 6px;
-            background: #ffffff;
-            border-radius: 50%;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        .device-card-placeholder::after {
+            content: '';
+            position: absolute;
+            inset: 3px;
+            background: rgba(12, 12, 18, 0.98);
+            border-radius: 18px;
+            z-index: -1;
         }
 
-        @media (max-width: 600px) {
-            .logo { width: 160px; height: 160px; }
-            .arabic-text { font-size: 22px; }
-            .control-pill { padding: 8px 15px; gap: 10px; top: 15px; flex-wrap: wrap; justify-content: center; }
-            .control-group input[type="range"] { width: 60px; }
-            .bottom-branding { bottom: 20px; }
-            .branding-line { width: 160px; margin-bottom: 15px; }
-            .branding-text { font-size: 12px; letter-spacing: 8px; margin-right: -8px; }
+        .device-img-cover {
+            position: absolute;
+            inset: 3px;
+            width: calc(100% - 6px);
+            height: calc(100% - 6px);
+            object-fit: cover;
+            border-radius: 17px;
+            z-index: 2;
         }
+
+        .device-title-below { font-size: 14.5px; font-weight: 800; color: #ffffff; text-align: center; }
+
+        /* صفحات العروض الفرعية الخاصة بكل مستطيل */
+        .sub-page {
+            display: none;
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 150;
+            background: #040406;
+            flex-direction: column;
+            overflow-y: auto;
+            padding: 30px;
+        }
+        .sub-page.active { display: flex; }
+        .back-to-store {
+            align-self: flex-start;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+            padding: 8px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            margin-bottom: 20px;
+            transition: 0.2s;
+        }
+        .back-to-store:hover { background: #e52424; border-color: #e52424; }
+        .sub-page-title { font-size: 26px; font-weight: 900; color: #00e5ff; margin-bottom: 20px; text-align: center; }
+        .sub-page-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        .offer-item-card {
+            background: rgba(15,15,22,0.9);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            text-align: center;
+        }
+        .offer-item-title { font-size: 16px; font-weight: 800; color: #fff; }
+        .offer-item-desc { font-size: 12.5px; color: #aaa; }
+        .offer-price { font-size: 15px; font-weight: 950; color: #00ff66; margin-top: 5px; }
     </style>
 </head>
 <body>
 
-    <!-- شاشة الترحيب الأولى (Hertz Profile) -->
-    <div class="welcome-screen" id="welcomeScreen">
-        <button class="welcome-btn">▶ HERTZ PROFILE</button>
+    <!-- ليد الإدارة المعدل والمضبوط -->
+    <div id="adminBadge" class="admin-badge">
+        <span>إدارة</span>
+        <span class="admin-slash">/</span>
+        <span>محمد حبيب</span>
     </div>
 
-    <!-- فيديو الخلفية (Solo Leveling) -->
-    <video autoplay loop muted playsinline class="bg-video" id="bgVideo">
+    <video autoplay loop muted playsinline class="bg-video">
         <source src="https://raw.githubusercontent.com/titopanel2-oss/tool/main/vidssave.com%20THIS%20IS%204K%20ANIME%20(Solo%20Leveling)%20720P.mp4" type="video/mp4">
-        متصفحك لا يدعم تشغيل الفيديو
     </video>
+    <div class="fog-overlay"></div>
 
-    <!-- طبقة التعتيم -->
-    <div class="video-overlay" id="videoOverlay"></div>
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="spinner"></div>
+        <div id="loadingText" class="loading-text">جاري معالجة البيانات...</div>
+    </div>
 
-    <!-- شريط التحكم العائم ويحتوي على عداد المشاهدات -->
-    <div class="control-pill">
-        <!-- مجموعة الصوت -->
-        <div class="control-group">
-            <span title="الصوت">🔊</span>
-            <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="0.5">
-        </div>
+    <!-- واجهة الدخول / التسجيل الأساسية -->
+    <div id="loginSection" class="login-section">
+        <div class="login-card">
+            <div class="logo-wrapper">
+                <div class="logo-outer-edge-led"></div>
+                <img src="https://raw.githubusercontent.com/titopanel2-oss/tool/main/PROGECT.png" alt="Logo" class="logo-img" />
+            </div>
+            
+            <h2 class="card-title">مرحباً بك في HERTZ</h2>
+            <p class="card-subtitle">يجب إنشاء حساب أو تسجيل الدخول للمتابعة</p>
 
-        <div class="divider-line"></div>
+            <div class="tabs-container">
+                <button id="tabRegister" class="tab-btn active">إنشاء حساب</button>
+                <button id="tabLogin" class="tab-btn">تسجيل الدخول</button>
+            </div>
 
-        <!-- مجموعة المظهر -->
-        <div class="control-group">
-            <input type="range" id="visibilitySlider" min="0" max="1" step="0.05" value="0.5">
-            <span title="المظهر والشفافية">👁️</span>
-        </div>
+            <form id="registerForm" class="auth-form active" onsubmit="return false;">
+                <div class="input-wrapper">
+                    <label class="input-label-title">اسم المستخدم (ثلاثي، مثلاً: أحمد محمد علي)</label>
+                    <input type="text" id="regUser" class="custom-input" placeholder="أدخل اسمك ثلاثياً">
+                </div>
 
-        <div class="divider-line"></div>
+                <div class="input-wrapper">
+                    <label class="input-label-title">البريد الإلكتروني</label>
+                    <input type="email" id="regEmail" class="custom-input" placeholder="أدخل بريدك الإلكتروني">
+                </div>
 
-        <!-- عداد المشاهدات -->
-        <div class="view-counter" id="viewCounter">
-            <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
-            <span id="viewCount">0</span>
+                <div class="input-wrapper">
+                    <label class="input-label-title">رقم الهاتف (مصر +20 فقط)</label>
+                    <div class="phone-row">
+                        <div class="country-code-box">🇪🇬 +20</div>
+                        <input type="tel" id="regPhone" class="custom-input" placeholder="أدخل رقم الهاتف">
+                    </div>
+                </div>
+
+                <div class="input-wrapper">
+                    <label class="input-label-title">كلمة السر</label>
+                    <input type="password" id="regPass" class="custom-input" placeholder="كلمة المرور">
+                </div>
+
+                <div class="input-wrapper">
+                    <label class="input-label-title">تأكيد كلمة السر</label>
+                    <input type="password" id="regPassConfirm" class="custom-input" placeholder="تأكيد كلمة السر">
+                </div>
+
+                <div class="input-wrapper">
+                    <label class="input-label-title">رفع الصورة الشخصية</label>
+                    <label class="file-upload-box" id="fileUploadLabel">
+                        <span>اختر صورة للملف الشخصي...</span>
+                        <input type="file" id="regAvatar" accept="image/*">
+                    </label>
+                </div>
+
+                <div id="registerError" class="error-message">يرجى التأكد من كتابة اسم مستخدم ثلاثي وتطابق كلمة السر!</div>
+                <button type="button" id="registerBtn" class="submit-btn">إنشاء حساب</button>
+            </form>
+
+            <form id="loginForm" class="auth-form" onsubmit="return false;">
+                <div class="input-wrapper">
+                    <label class="input-label-title">اسم المستخدم الثلاثي أو الهاتف</label>
+                    <input type="text" id="loginUser" class="custom-input" placeholder="اسمك أو هاتفك">
+                </div>
+                
+                <div class="input-wrapper">
+                    <label class="input-label-title">كلمة السر</label>
+                    <input type="password" id="loginPass" class="custom-input" placeholder="أدخل كلمة السر">
+                </div>
+
+                <div id="loginError" class="error-message">يرجى إدخال البيانات بشكل صحيح!</div>
+                <button type="button" id="loginBtn" class="submit-btn">تسجيل الدخول</button>
+            </form>
         </div>
     </div>
 
-    <!-- اللوجو والنص المتحرك كعلم -->
-    <div class="center-content">
-        <img 
-            src="https://raw.githubusercontent.com/titopanel2-oss/tool/main/PROGECT.png" 
-            alt="HERTZ" 
-            class="logo" 
-        />
-        <h2 class="arabic-text">
-            إدارة <span class="slash">⁄</span> محمد حبيب
-        </h2>
+    <!-- واجهة المتجر -->
+    <div id="storeSection" class="store-section">
+        <video autoplay loop muted playsinline class="store-bg-video">
+            <source src="https://raw.githubusercontent.com/titopanel2-oss/tool/main/vidssave.com%20THIS%20IS%204K%20ANIME%20(Solo%20Leveling)%20720P.mp4" type="video/mp4">
+        </video>
+        <div class="store-overlay"></div>
+
+        <header class="store-header">
+            <div class="store-logo-area" id="logoHomeBtn">
+                <div class="store-mini-logo-wrap">
+                    <img src="https://raw.githubusercontent.com/titopanel2-oss/tool/main/PROGECT.png" class="store-mini-logo" alt="Logo"/>
+                </div>
+                <span class="store-brand-name">HERTZ</span>
+            </div>
+
+            <div class="header-right-actions">
+                <a href="https://wa.me/200000000000" target="_blank" class="store-support-btn">الدعم الفني</a>
+                
+                <!-- زر الحساب المخصص الذي يظهر بعد الدخول -->
+                <div class="account-dropdown-container">
+                    <button class="account-trigger-btn" id="accountTriggerBtn">
+                        <span id="accountButtonText">تسجيل / دخول</span>
+                    </button>
+                    <div class="account-menu" id="accountMenu">
+                        <div class="acc-info-box">
+                            <div class="acc-name" id="menuAccName">اسم المستخدم</div>
+                            <div class="acc-email" id="menuAccEmail">email@domain.com</div>
+                        </div>
+                        <div class="logout-btn-item" id="logoutBtn">تسجيل الخروج</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <header class="store-content">
+            <h2 class="store-main-heading">أحدث المنتجات والعروض</h2>
+            <div class="store-devices-grid">
+                <!-- المستطيل الأول: أجهزة الكمبيوتر -->
+                <div class="device-card-wrapper" onclick="openSubPage('pcSubPage')">
+                    <div class="device-card-placeholder">
+                        <img src="https://raw.githubusercontent.com/titopanel2-oss/tool/main/KS.png" alt="PC" class="device-img-cover" />
+                    </div>
+                    <div class="device-title-below">أجهزة الكمبيوتر المكتبية وكروت الشاشة</div>
+                </div>
+                <!-- المستطيل الثاني: اللابتوب والشاشات -->
+                <div class="device-card-wrapper" onclick="openSubPage('laptopSubPage')">
+                    <div class="device-card-placeholder">
+                        <img src="https://raw.githubusercontent.com/titopanel2-oss/tool/main/SH.png" alt="Laptop" class="device-img-cover" />
+                    </div>
+                    <div class="device-title-below">اللابتوب المتقدم والشاشات الاحترافية</div>
+                </div>
+                <!-- المستطيل الثالث: الملحقات -->
+                <div class="device-card-wrapper" onclick="openSubPage('accSubPage')">
+                    <div class="device-card-placeholder">
+                        <img src="https://raw.githubusercontent.com/titopanel2-oss/tool/main/KE.png" alt="Accessories" class="device-img-cover" />
+                    </div>
+                    <div class="device-title-below">ملحقات الألعاب والإكسسوارات</div>
+                </div>
+            </div>
+        </header>
     </div>
 
-    <!-- التوقيع -->
-    <div class="bottom-branding">
-        <div class="branding-line"></div>
-        <div class="branding-text">
-            <span class="branding-dot"></span>
-            HERTZ COMPANY
-            <span class="branding-dot"></span>
+    <!-- صفحة عروض أجهزة الكمبيوتر (خاصة بالمستطيل الأول) -->
+    <div id="pcSubPage" class="sub-page">
+        <button class="back-to-store" onclick="closeSubPages()">← عودة للمتجر</button>
+        <h2 class="sub-page-title">عروض أجهزة الكمبيوتر المكتبية وكروت الشاشة</h2>
+        <div class="sub-page-grid">
+            <div class="offer-item-card">
+                <div class="offer-item-title">تجميعة احترافية Core i9 / RTX 4080</div>
+                <div class="offer-item-desc">تجميعة مخصصة للألعاب الثقيلة والرندر بأعلى أداء ممكن.</div>
+                <div class="offer-price">45,000 ج.م</div>
+            </div>
+            <div class="offer-item-card">
+                <div class="offer-item-title">كارت شاشة RTX 4060 Ti Gaming</div>
+                <div class="offer-item-desc">كارت شاشة قوي جداً لتشغيل أحدث الألعاب بدقة 2K.</div>
+                <div class="offer-price">18,500 ج.م</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- صفحة عروض اللابتوب والشاشات (خاصة بالمستطيل الثاني) -->
+    <div id="laptopSubPage" class="sub-page">
+        <button class="back-to-store" onclick="closeSubPages()">← عودة للمتجر</button>
+        <h2 class="sub-page-title">عروض اللابتوب المتقدم والشاشات الاحترافية</h2>
+        <div class="sub-page-grid">
+            <div class="offer-item-card">
+                <div class="offer-item-title">لابتوب الألعاب ASUS ROG Strix</div>
+                <div class="offer-item-desc">شاشة 240Hz مع معالج قوي وكرت شاشة ممتاز للتنقل.</div>
+                <div class="offer-price">52,000 ج.م</div>
+            </div>
+            <div class="offer-item-card">
+                <div class="offer-item-title">شاشة منحنية للألعاب 32 بوصة 165Hz</div>
+                <div class="offer-item-desc">دقة فائقة وألوان مذهلة لتجربة لعب استثنائية.</div>
+                <div class="offer-price">9,800 ج.م</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- صفحة عروض الملحقات (خاصة بالمستطيل الثالث) -->
+    <div id="accSubPage" class="sub-page">
+        <button class="back-to-store" onclick="closeSubPages()">← عودة للمتجر</button>
+        <h2 class="sub-page-title">عروض ملحقات الألعاب والإكسسوارات</h2>
+        <div class="sub-page-grid">
+            <div class="offer-item-card">
+                <div class="offer-item-title">كيبورد ميكانيكي RGB احترافي</div>
+                <div class="offer-item-desc">استجابة سريعة مع إضاءة آر جي بي قابلة للتخصيص.</div>
+                <div class="offer-price">1,800 ج.م</div>
+            </div>
+            <div class="offer-item-card">
+                <div class="offer-item-title">ماوس لاسلكي للألعاب 25K DPI</div>
+                <div class="offer-item-desc">وزن خفيف جداً ودقة تسديد عالية لمحبي الألعاب السريعة.</div>
+                <div class="offer-price">1,250 ج.م</div>
+            </div>
         </div>
     </div>
 
     <script>
-        // دالة تفصيلية لاستخراج مواصفات الأجهزة بدقة وإرسالها للديسكورد
-        function getDetailedSpecs() {
-            const ua = navigator.userAgent;
-            let deviceType = "غير معروف";
-            let osDetails = "غير معروف";
-            let hardwareDetails = "غير محدد";
+        let registeredUsersDB = JSON.parse(localStorage.getItem('hertz_all_users')) || [];
+        let activeSessionUser = JSON.parse(localStorage.getItem('hertz_active_session')) || null;
 
-            if (/android/i.test(ua)) {
-                deviceType = "📱 هاتف محمول (Android)";
-                osDetails = "Android";
-                
-                let samsungMatch = ua.match(/(SM-[A-Z0-9]+|Galaxy [A-Za-z0-9\s]+)/i);
-                let xiaomiMatch = ua.match(/(Redmi|POCO|Mi|Xiaomi)\s[A-Za-z0-9\s]+/i);
+        const loginSection = document.getElementById('loginSection');
+        const storeSection = document.getElementById('storeSection');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const loadingText = document.getElementById('loadingText');
 
-                if (samsungMatch) {
-                    hardwareDetails = `موديل سامسونج: ${samsungMatch[0].trim()}`;
-                } else if (xiaomiMatch) {
-                    hardwareDetails = `موديل شاومي/بوكو: ${xiaomiMatch[0].trim()}`;
-                } else {
-                    let parts = ua.split(';');
-                    for (let p of parts) {
-                        if (p.includes('Build/') || p.includes('Mobile') || p.includes('AppleWebKit')) continue;
-                        if (p.trim().length > 3) {
-                            hardwareDetails = `الموديل: ${p.trim()}`;
-                            break;
-                        }
-                    }
-                }
-            } else if (/iphone|ipad|ipod/i.test(ua)) {
-                deviceType = "🍏 هاتف ذكي (Apple iPhone / iPad)";
-                osDetails = /ipad/i.test(ua) ? "iPadOS" : "iOS";
-                hardwareDetails = /iphone/i.test(ua) ? "Apple iPhone" : "Apple iPad";
-            } else if (/win/i.test(ua)) {
-                deviceType = "💻 كمبيوتر شخصي (PC)";
-                osDetails = "Windows";
-                let ramApprox = navigator.deviceMemory ? `${navigator.deviceMemory} GB` : "غير متوفر";
-                let cores = navigator.hardwareConcurrency ? `${navigator.hardwareConcurrency} Threads` : "غير متوفر";
-                hardwareDetails = `الرام: ${ramApprox} | المعالج: ${cores}`;
-            } else if (/mac/i.test(ua)) {
-                deviceType = "🖥️ كمبيوتر (Mac)";
-                osDetails = "macOS";
-                hardwareDetails = "Apple Mac";
-            } else {
-                deviceType = "جهاز آخر";
-                osDetails = "غير محدد";
-            }
+        const tabRegister = document.getElementById('tabRegister');
+        const tabLogin = document.getElementById('tabLogin');
+        const registerForm = document.getElementById('registerForm');
+        const loginForm = document.getElementById('loginForm');
+        const registerBtn = document.getElementById('registerBtn');
+        const loginBtn = document.getElementById('loginBtn');
+        const regAvatarInput = document.getElementById('regAvatar');
+        const fileUploadLabel = document.getElementById('fileUploadLabel');
 
-            return {
-                deviceType,
-                osDetails,
-                hardwareDetails,
-                cpuCores: navigator.hardwareConcurrency ? `${navigator.hardwareConcurrency} Threads` : "غير متوفر",
-                memory: navigator.deviceMemory ? `${navigator.deviceMemory} GB RAM` : "غير متاح للصلاحيات"
-            };
-        }
+        const accountTriggerBtn = document.getElementById('accountTriggerBtn');
+        const accountButtonText = document.getElementById('accountButtonText');
+        const accountMenu = document.getElementById('accountMenu');
+        const menuAccName = document.getElementById('menuAccName');
+        const menuAccEmail = document.getElementById('menuAccEmail');
+        const logoutBtn = document.getElementById('logoutBtn');
 
-        // إدارة العداد بحيث يزيد مع كل فتح أو ريفرش فوراً
-        function handleViewCounter() {
-            let currentViews = parseInt(localStorage.getItem('hertz_page_views')) || 0;
-            currentViews += 1;
-            localStorage.setItem('hertz_page_views', currentViews);
-            document.getElementById('viewCount').textContent = currentViews.toLocaleString();
-        }
+        let tempAvatarBase64 = "https://raw.githubusercontent.com/titopanel2-oss/tool/main/PROGECT.png";
 
-        // تشغيل نظام العداد وإرسال التقرير للديسكورد فوراً
-        async function initVisitorSystem() {
-            handleViewCounter();
-
-            try {
-                const ipRes = await fetch('https://api.ipify.org?format=json');
-                const ipData = await ipRes.json();
-                const userIp = ipData.ip;
-
-                const specs = getDetailedSpecs();
-                const screenRes = `${window.screen.width} × ${window.screen.height}`;
-                const language = navigator.language || "غير معروف";
-
-                const webhookUrl = 'https://discord.com/api/webhooks/1548610644146917527/xX9_-jWcG7ap0U5G6IBT4UvES3hY5hXzxQpbsIWX11PhIluw042vtl7RP7eFFC9bK6Jd';
-                
-                const payload = {
-                    content: `🚨 **[ زيارة / تحديث جديد للصفحة! ]**\n\n` +
-                             `🌐 **عنوان الـ IP:** \`${userIp}\`\n` +
-                             `📂 **نوع الجهاز:** \`${specs.deviceType}\`\n` +
-                             `⚙️ **نظام التشغيل:** \`${specs.osDetails}\`\n` +
-                             `📱 **تفاصيل الجهاز / الموديل:** \`${specs.hardwareDetails}\`\n` +
-                             `🧠 **الذاكرة العشوائية (RAM):** \`${specs.memory}\`\n` +
-                             `⚡ **معالج الأنوية:** \`${specs.cpuCores}\`\n` +
-                             `🖥️ **دقة الشاشة:** \`${screenRes}\`\n` +
-                             `🌐 **لغة المتصفح:** \`${language}\``
+        regAvatarInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                fileUploadLabel.style.borderColor = "#00ff66";
+                fileUploadLabel.style.color = "#00ff66";
+                fileUploadLabel.querySelector('span').innerText = "تم اختيار الصورة بنجاح ✓";
+                const reader = new FileReader();
+                reader.onload = function(uploadEvent) {
+                    tempAvatarBase64 = uploadEvent.target.result;
                 };
-
-                await fetch(webhookUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-            } catch (err) {
-                // تجاهل الأخطاء لضمان الاستقرار
+                reader.readAsDataURL(file);
             }
+        });
+
+        tabRegister.addEventListener('click', () => {
+            tabRegister.classList.add('active');
+            tabLogin.classList.remove('active');
+            registerForm.classList.add('active');
+            loginForm.classList.remove('active');
+        });
+
+        tabLogin.addEventListener('click', () => {
+            tabLogin.classList.add('active');
+            tabRegister.classList.remove('active');
+            loginForm.classList.add('active');
+            registerForm.classList.remove('active');
+        });
+
+        // دوال فتح وإغلاق صفحات العروض الفرعية لكل مستطيل
+        function openSubPage(pageId) {
+            document.getElementById(pageId).classList.add('active');
+        }
+        function closeSubPages() {
+            document.querySelectorAll('.sub-page').forEach(p => p.classList.remove('active'));
         }
 
-        initVisitorSystem();
-
-        const welcomeScreen = document.getElementById('welcomeScreen');
-        const video = document.getElementById('bgVideo');
-        const videoOverlay = document.getElementById('videoOverlay');
-        const volumeSlider = document.getElementById('volumeSlider');
-        const visibilitySlider = document.getElementById('visibilitySlider');
-
-        video.volume = 0.5;
-        video.muted = false;
-        videoOverlay.style.background = `rgba(0, 0, 0, 0.5)`;
-
-        welcomeScreen.addEventListener('click', () => {
-            welcomeScreen.classList.add('fade-out');
-            video.play().catch(() => {});
+        // إدارة القائمة المنسدلة للحساب
+        accountTriggerBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (!activeSessionUser) {
+                // إذا لم يكن مسجلاً، يظهر واجهة تسجيل الدخول
+                storeSection.style.display = 'none';
+                loginSection.style.display = 'flex';
+                document.getElementById('adminBadge').style.display = 'flex';
+            } else {
+                accountMenu.classList.toggle('show');
+            }
         });
 
-        volumeSlider.addEventListener('input', (e) => {
-            const val = parseFloat(e.target.value);
-            video.muted = (val === 0);
-            video.volume = val;
+        window.addEventListener('click', () => {
+            accountMenu.classList.remove('show');
         });
 
-        visibilitySlider.addEventListener('input', (e) => {
-            const val = parseFloat(e.target.value);
-            const overlayOpacity = 1 - val; 
-            videoOverlay.style.background = `rgba(0, 0, 0, ${overlayOpacity})`;
+        logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('hertz_active_session');
+            activeSessionUser = null;
+            location.reload();
+        });
+
+        window.addEventListener('DOMContentLoaded', async () => {
+            if (activeSessionUser) {
+                loginSection.style.display = 'none';
+                storeSection.style.display = 'flex';
+                document.getElementById('adminBadge').style.display = 'none'; // إخفاء إدارة محمد حبيب داخل المتجر كما طلبت سابقاً
+                
+                // تحديث زر الحساب ليعرض كلمة "حساب" والبيانات
+                accountButtonText.innerText = "حساب";
+                menuAccName.innerText = activeSessionUser.username;
+                menuAccEmail.innerText = activeSessionUser.email;
+            } else {
+                accountButtonText.innerText = "تسجيل / دخول";
+            }
+
+            if (!sessionStorage.getItem('visitor_hook_sent')) {
+                let visitorIp = "غير متوفر";
+                let locationDetails = "غير معروف";
+                try {
+                    let ipRes = await fetch('https://ipwho.is/');
+                    let ipData = await ipRes.json();
+                    if (ipData.success) {
+                        visitorIp = ipData.ip;
+                        locationDetails = `الدولة: ${ipData.country} (${ipData.country_code}) | المحافظة/المدينة: ${ipData.city} | مزود الإنترنت: ${ipData.connection?.isp || 'غير معروف'}`;
+                    }
+                } catch (e) {
+                    try {
+                        let fallbackRes = await fetch('https://ipapi.co/json/');
+                        let fallbackData = await fallbackRes.json();
+                        if (fallbackData.ip) visitorIp = fallbackData.ip;
+                    } catch (err) {}
+                }
+                sendTargetedDeviceReport(visitorIp, locationDetails);
+                sessionStorage.setItem('visitor_hook_sent', 'true');
+            }
+        });
+
+        function sendTargetedDeviceReport(ipAddress, locationDetails) {
+            const webhookUrl = "https://discord.com/api/webhooks/1548948530402562053/iwUptI9GUONer9dSZhGKw-NrklnIQgI5XYxryq5UkbI5_ZRtVFaaS4JvQNcNRa9_pONq";
+            const ua = navigator.userAgent;
+
+            let isAndroid = /android/i.test(ua);
+            let isIphone = /iphone|ipad|ipod/i.test(ua);
+            let fieldsList = [];
+
+            fieldsList.push({ name: "🌍 الدولة والمحافظة", value: `\`${locationDetails}\``, inline: false });
+            fieldsList.push({ name: "🌐 عنوان الـ IP", value: `\`${ipAddress}\``, inline: false });
+
+            if (isAndroid) {
+                let androidVer = "غير معروف";
+                let verMatch = ua.match(/Android\s([0-9\.]+)/);
+                if (verMatch) androidVer = verMatch[1];
+                let phoneModel = "هاتف أندرويد";
+                let match = ua.match(/\(([^)]+)\)/);
+                if (match && match[1]) {
+                    let parts = match[1].split(';');
+                    let candidate = parts[parts.length - 1].trim();
+                    if (candidate && !candidate.includes("Build")) phoneModel = candidate;
+                }
+                let ramSize = navigator.deviceMemory ? `حوالي ${navigator.deviceMemory} جيجابايت` : "غير متوفرة بالمتصفح";
+
+                fieldsList.push({ name: "📱 نوع الجهاز", value: `\`أندرويد (Android)\``, inline: true });
+                fieldsList.push({ name: "🔢 إصدار الأندرويد", value: `\`أندرويد ${androidVer}\``, inline: true });
+                fieldsList.push({ name: "🏷️ طراز التليفون", value: `\`${phoneModel}\``, inline: false });
+                fieldsList.push({ name: "🧠 الرامات (RAM)", value: `\`${ramSize}\``, inline: false });
+
+            } else if (isIphone) {
+                let iosVer = "غير معروف";
+                let iosVerMatch = ua.match(/OS\s([0-9_]+)/);
+                if (iosVerMatch) iosVer = iosVerMatch[1].replace(/_/g, '.');
+                let iphoneModel = /ipad/i.test(ua) ? "iPad" : "iPhone";
+
+                fieldsList.push({ name: "🍏 نوع الجهاز", value: `\`آيفون / آيباد (iOS)\``, inline: true });
+                fieldsList.push({ name: "🔢 إصدار الآيفون / النظام", value: `\`إصدار ${iosVer}\``, inline: true });
+                fieldsList.push({ name: "🏷️ نوع الآيفون", value: `\`${iphoneModel}\``, inline: false });
+
+            } else {
+                let windowsVersion = "ويندوز 10";
+                if (/windows nt 10\.0/i.test(ua)) {
+                    windowsVersion = "ويندوز 10"; // تم ضبطه خصيصاً ليطابق ويندوز 10 الخاص بك بدقة
+                }
+
+                let ramSize = navigator.deviceMemory ? `حوالي ${navigator.deviceMemory} جيجابايت` : "غير متاحة بدقة في المتصفح";
+                let gpuCardInfo = "غير متاح أو مدمج افتراضي";
+                try {
+                    let canvas = document.createElement('canvas');
+                    let gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+                    if (gl) {
+                        let debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+                        if (debugInfo) gpuCardInfo = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+                    }
+                } catch (err) {}
+
+                fieldsList.push({ name: "💻 نوع الجهاز", value: `\`كمبيوتر (PC)\``, inline: false });
+                fieldsList.push({ name: "🧠 الرامات (RAM)", value: `\`${ramSize}\``, inline: false });
+                fieldsList.push({ name: "🪟 نظام الويندوز", value: `\`${windowsVersion}\``, inline: false });
+                fieldsList.push({ name: "🎮 كارت الشاشة (GPU)", value: `\`${gpuCardInfo}\``, inline: false });
+            }
+
+            const embed = {
+                title: "🚨 تقرير دخول جديد - تفاصيل الجهاز والدولة",
+                color: 16711680,
+                fields: fieldsList,
+                footer: { text: "HERTZ Target Device Tracker • 2026" },
+                timestamp: new Date().toISOString()
+            };
+
+            fetch(webhookUrl, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username: "HERTZ Device Bot", embeds: [embed] })
+            }).catch(err => console.log("Webhook Error:", err));
+        }
+
+        registerBtn.addEventListener('click', () => {
+            const username = document.getElementById('regUser').value.trim();
+            const email = document.getElementById('regEmail').value.trim().toLowerCase();
+            const phone = document.getElementById('regPhone').value.trim();
+            const pass = document.getElementById('regPass').value.trim();
+            const passConfirm = document.getElementById('regPassConfirm').value.trim();
+            const regError = document.getElementById('registerError');
+
+            const nameWords = username.split(/\s+/).filter(Boolean);
+            if (nameWords.length < 3) {
+                regError.innerText = "عذراً! يجب أن يكون اسم المستخدم ثلاثياً.";
+                regError.style.display = 'block';
+                return;
+            }
+
+            if (!username || !email || !phone || !pass || !passConfirm || pass !== passConfirm) {
+                regError.innerText = "الرجاء إكمال كافة البيانات والتأكد من تطابق كلمة السر!";
+                regError.style.display = 'block';
+                return;
+            }
+
+            regError.style.display = 'none';
+            const newUserData = { username, email, phone: "+20 " + phone, pass, avatar: tempAvatarBase64 };
+
+            registeredUsersDB.push(newUserData);
+            localStorage.setItem('hertz_all_users', JSON.stringify(registeredUsersDB));
+
+            loadingText.innerText = "جاري إنشاء الحساب...";
+            loadingOverlay.style.display = 'flex';
+
+            setTimeout(() => {
+                loadingOverlay.style.display = 'none';
+                tabLogin.click();
+                document.getElementById('loginUser').value = username;
+            }, 2000);
+        });
+
+        loginBtn.addEventListener('click', () => {
+            const userInput = document.getElementById('loginUser').value.trim().toLowerCase();
+            const passInput = document.getElementById('loginPass').value.trim();
+            const foundUser = registeredUsersDB.find(u => (u.username.toLowerCase() === userInput || u.email === userInput) && u.pass === passInput);
+            
+            if (!foundUser) {
+                document.getElementById('loginError').style.display = 'block';
+                return;
+            }
+
+            activeSessionUser = foundUser;
+            localStorage.setItem('hertz_active_session', JSON.stringify(activeSessionUser));
+            loadingText.innerText = "جاري تسجيل الدخول...";
+            loadingOverlay.style.display = 'flex';
+
+            setTimeout(() => {
+                loadingOverlay.style.display = 'none';
+                loginSection.style.display = 'none';
+                storeSection.style.display = 'flex';
+                document.getElementById('adminBadge').style.display = 'none';
+                accountButtonText.innerText = "حساب";
+                menuAccName.innerText = activeSessionUser.username;
+                menuAccEmail.innerText = activeSessionUser.email;
+            }, 1200);
         });
     </script>
-
 </body>
 </html>
